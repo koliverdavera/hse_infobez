@@ -89,9 +89,6 @@ if __name__ == '__main__':
         message = input(f'{my_username} > ')
 
         if message:
-            # if not sender_key:
-            #     sender_key = get_sender_key(client_socket)
-            #     continue
             send_encrypted_message(client_socket, message, current_key)
 
         try:
