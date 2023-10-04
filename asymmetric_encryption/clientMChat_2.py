@@ -7,16 +7,6 @@ HEADER_LENGTH = 10
 
 IP = "127.0.0.1"
 PORT = 1234
-my_username = input("Username: ")
-
-client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-client_socket.connect((IP, PORT))
-client_socket.setblocking(False)
-
-username = my_username.encode('utf-8')
-username_header = f"{len(username):<{HEADER_LENGTH}}".encode('utf-8')
-client_socket.send(username_header + username)
 
 
 def send_message(client_socket, message_text):
@@ -39,22 +29,38 @@ def read_message(client_socket, HEADER_LENGTH=HEADER_LENGTH):
     print(f'{username} > {message}')
 
 
-while True:
-    message = input(f'{my_username} > ')
+if __name__ == '__main__':
 
-    if message:
-        send_message(client_socket, message)
-    try:
-        while True:
-            read_message(client_socket)
+    my_username = input("Username: ")
 
-    except IOError as e:
-        if e.errno != errno.EAGAIN and e.errno != errno.EWOULDBLOCK:
-            print('Reading error: {}'.format(str(e)))
+    client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+    client_socket.connect((IP, PORT))
+    client_socket.setblocking(False)
+
+    username = my_username.encode('utf-8')
+    username_header = f"{len(username):<{HEADER_LENGTH}}".encode('utf-8')
+
+    my_public_key =
+
+    client_socket.send(username_header + username)
+
+    while True:
+        message = input(f'{my_username} > ')
+
+        if message:
+            send_message(client_socket, message)
+        try:
+            while True:
+                read_message(client_socket)
+
+        except IOError as e:
+            if e.errno != errno.EAGAIN and e.errno != errno.EWOULDBLOCK:
+                print('Reading error: {}'.format(str(e)))
+                sys.exit()
+            continue
+
+        except Exception as e:
+            # Any other exception - something happened, exit
+            print('Reading error: '.format(str(e)))
             sys.exit()
-        continue
-
-    except Exception as e:
-        # Any other exception - something happened, exit
-        print('Reading error: '.format(str(e)))
-        sys.exit()
