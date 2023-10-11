@@ -141,14 +141,5 @@ if __name__ == '__main__':
         ready, _, _ = select.select([client_socket], [], [], 0.1)
         if ready:
             read_message(ready[0])
-        else:
-            continue
-        # try:
-        #     while True:
-        #         read_message(client_socket)
-        #
-        # except IOError as e:
-        #     if e.errno != errno.EAGAIN and e.errno != errno.EWOULDBLOCK:
-        #         print('Reading error: {}'.format(str(e)))
-        #         sys.exit()
+        # else:
         #     continue
